@@ -27,7 +27,7 @@ class DaoFactory extends AbstractFactory
         return parent::getInstance();
     }
 
-    protected function validateClass($className)
+    protected function validateClass($className, $interfaces)
     {
         if(!class_exists($className)) {
             throw new Exceptions\FactoryInvalidClassException();
@@ -70,6 +70,17 @@ class DaoFactory extends AbstractFactory
         
         $this->validateClass($fullClassName, $interfaces);
         
-        return new $fullClassName();
+        $dao = new $fullClassName();
+        
+        if(count($interfaces) > 0)
+        {
+            foreach($interfaces as $interface) {
+                if(!($dao instanceof $interface)) {
+                    throw new DaoFactoryInterfaceNotImplementedException();
+                }
+            }
+        }
+        
+        return $dao;
     }
 }

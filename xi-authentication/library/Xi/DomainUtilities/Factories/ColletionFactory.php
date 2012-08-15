@@ -20,6 +20,14 @@ class CollectionFactory extends AbstractFactory
         return parent::getInstance();
     }
 
+    public function validateClass($className) {
+        parent::validateClass($className);
+        
+        if(!in_array('Xi\\DomainUtilities\\BaseClasses\\Repository'.$this->factoryType, 
+                     class_parents($className))) {
+            throw new Exceptions\FactoryInvalidInheritanceException();
+        }
+    }
     /**
      * Creates a new Collection class instance
      * 
@@ -30,10 +38,10 @@ class CollectionFactory extends AbstractFactory
      * @param string $namespace
      * @return \Xi\DomainUtilities\Factories\Collection
      */
-    public function create($collectionName, $namespace = "")
+    public function create($collectionName, $namespace = "", $repositoryCollection = false)
     {
         $fullClassName = $namespace.$collectionName; 
-        $this->validateClass($fullClassName);
+        $this->validateClass($fullClassName, $repositoryCollection);
         
         return new $fullClassName();
     }
