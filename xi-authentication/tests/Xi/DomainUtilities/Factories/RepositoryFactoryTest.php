@@ -14,5 +14,7 @@ class RepositoryFactoryTest extends FactoryTestAbstract
                 "Xi\TestDummies\RepositoryDummy",
                 get_class(RepositoryFactory::getInstance()->create("RepositoryDummy", "Xi\TestDummies\\"))
             );
+        
+        $this->getMock("daa");
     }
 }

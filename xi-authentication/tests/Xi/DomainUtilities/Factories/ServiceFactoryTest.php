@@ -10,6 +10,7 @@ class ServiceFactoryTest extends FactoryTestAbstract
     
     public function testCreateShouldSucceed()
     {
+        $this->
         $this->assertSame(
                 "Xi\TestDummies\ServiceDummy",
                 get_class(ServiceFactory::getInstance()->create("ServiceDummy", "Xi\TestDummies\\"))

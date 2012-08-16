@@ -13,8 +13,14 @@ abstract class Service
      */
     protected function getRepositoryFactory()
     {
-        return RepositoryFactory::getInstance();
+        if($this->repositoryFactory === null) {
+            $this->repositoryFactory = RepositoryFactory::getInstance();
+        }
+        
+        return $this->repositoryFactory;
     }
+    
+    
     
     /**
      * 

@@ -30,7 +30,7 @@ class RepositoryFactory extends AbstractFactory
      * @param string $namespace
      * @return \Xi\DomainUtilities\Factories\Repository
      */
-    public function create($repositoryName, $namespace = "", $framework)
+    public function create($repositoryName, $namespace = "", $framework = "")
     {
         $fullClassName = $namespace.$repositoryName; 
         $this->validateClass($fullClassName);

@@ -52,7 +52,7 @@ class DaoFactory extends AbstractFactory
      * @return \Xi\DomainUtilities\Factories\fullClassName
      * @throws DaoFactoryUnknownFrameworkException
      */
-    public function create($daoName, $namespace = "", $frameworkClass, $interfaces)
+    public function create($daoName, $namespace = "", $frameworkClass = "", $interfaces = array())
     {
         $fullClassName = $namespace.$daoName; 
         
