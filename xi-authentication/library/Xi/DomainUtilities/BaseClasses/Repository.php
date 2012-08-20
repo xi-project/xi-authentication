@@ -1,6 +1,7 @@
 <?php
 namespace Xi\DomainUtilities\BaseClasses;
 
+use Xi\DomainUtilities\BaseClasses\DomainBase;
 use Xi\DomainUtilities\BaseClasses\Entity;
 
 use Xi\DomainUtilities\Factories\CollectionFactory;
@@ -8,7 +9,9 @@ use Xi\DomainUtilities\Factories\DaoFactory;
 use Xi\DomainUtilities\Factories\EntityFactory;
 use Xi\DomainUtilities\Factories\ValueObjectFactory;
 
-abstract class Repository
+use Xi\DomainUtilities\Factories\FactoryOptions\FactoryOptions;
+
+abstract class Repository extends DomainBase
 {
     /**
      * The type of entities this repository manages as AggregateRoot
@@ -44,7 +47,7 @@ abstract class Repository
      * 
      * @return EntityFactory
      */
-    protected function getEntityFactory()
+    private function getEntityFactory()
     {
         return EntityFactory::getInstance();
     }
@@ -54,7 +57,7 @@ abstract class Repository
      * 
      * @return ValueObjectFactory
      */
-    protected function getValueObjectFactory()
+    private function getValueObjectFactory()
     {
         return ValueObjectFactory::getInstance();
     }
@@ -64,7 +67,7 @@ abstract class Repository
      * 
      * @return CollectionFactory
      */
-    protected function getCollectionFactory()
+    private function getCollectionFactory()
     {
         return CollectionFactory::getInstance();
     }
@@ -74,7 +77,7 @@ abstract class Repository
      * 
      * @return DaoFactory
      */
-    protected function getDaoFactory()
+    private function getDaoFactory()
     {
         return DaoFactory::getInstance();
     }
@@ -85,7 +88,7 @@ abstract class Repository
      * 
      * @param array $params
      */
-    protected function createAggregateRoot($params)
+    private function createAggregateRoot($params)
     {
         if($this->collection == null) {
             $this->collection = $this->getCollectionFactory()
@@ -102,7 +105,7 @@ abstract class Repository
      * 
      * @param Entity $entity
      */
-    protected function removeAggregateRoot(Entity $entity)
+    private function removeAggregateRoot(Entity $entity)
     {
         if($this->collection === null) {
             $this->collection = $this->getCollectionFactory()
@@ -122,7 +125,7 @@ abstract class Repository
      * @param array $params
      * @param string $namespace
      */
-    protected function createAggregateEntity($aggregateRootId, $entityName, $params, $namespace = "")
+    private function createAggregateEntity($aggregateRootId, $entityName, $params, $namespace = "")
     {
         $this->collection->addAggregateEntity(
                 $this->getEntityFactory()
@@ -142,7 +145,7 @@ abstract class Repository
      * @param int $aggregateRootId
      * @param Entity $entity
      */
-    protected function removeAggregateEntity($aggregateRootId, Entity $entity)
+    private function removeAggregateEntity($aggregateRootId, Entity $entity)
     {
         $this->collection->removeAggregateEntity($entity, $aggregateRootId);
     }
@@ -157,7 +160,7 @@ abstract class Repository
      * @param array $params
      * @param string $namespace
      */
-    protected function createAggregateValueObject($aggregateRootId, $valueObjectName, $params, $namespace = "")
+    private function createAggregateValueObject($aggregateRootId, $valueObjectName, $params, $namespace = "")
     {
         $this->collection->addAggregateValueObject(
                 $this->getValueObjectFactory()
@@ -178,7 +181,7 @@ abstract class Repository
      * @param int $aggregateRootId
      * @param ValueObject $valueObject
      */
-    protected function removeAggregateValueObject($aggregateRootId, ValueObject $valueObject)
+    private function removeAggregateValueObject($aggregateRootId, ValueObject $valueObject)
     {
         $this->collection->removeAggregateValueObject(
                 $valueObject,
@@ -195,10 +198,15 @@ abstract class Repository
      * @param array $interfaces array containing the names of Interfaces used by DAO
      * @return miexed
      */
-    protected function getDao($daoClassName, $interfaces = array())
+    private function getDao($daoClassName, $interfaces = array())
     {
         if(!isset($this->daos[$daoClassName])) {
-            $this->daos[$daoClassName] = $this->getDaoFactory()->create($daoClassName, $this->frameworkType, $interfaces);
+            $this->daos[$daoClassName] = $this->getDaoFactory()
+                    ->create($daoClassName, 
+                            FactoryOptions::create()
+                                ->setFramework($this->frameworkType)
+                                ->setInterfaces($interfaces)
+                                ->setNamespace($this->getInfrastructureNamespace()));
         }
         
         return $this->daos[$daoClassName];

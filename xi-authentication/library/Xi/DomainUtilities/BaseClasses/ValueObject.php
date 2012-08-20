@@ -1,7 +1,9 @@
 <?php
 namespace Xi\DomainUtilities\BaseClasses;
 
-abstract class ValueObject
+use Xi\DomainUtilities\BaseClasses\DomainBase;
+
+abstract class ValueObject extends DomainBase
 {
     /**
      * ValueObjects may not have id!

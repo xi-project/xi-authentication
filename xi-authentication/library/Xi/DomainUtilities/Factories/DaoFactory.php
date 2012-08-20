@@ -2,6 +2,7 @@
 namespace Xi\DomainUtilities\Factories;
 
 use Xi\DomainUtilities\BaseClasses\AbstractFactory;
+use Xi\DomainUtilities\Factories\FactoryOptions\FactoryOptions;
 
 class DaoFactory extends AbstractFactory
 {
@@ -27,7 +28,7 @@ class DaoFactory extends AbstractFactory
         return parent::getInstance();
     }
 
-    protected function validateClass($className, $interfaces)
+    protected function validateClass($className)
     {
         if(!class_exists($className)) {
             throw new Exceptions\FactoryInvalidClassException();
@@ -45,18 +46,14 @@ class DaoFactory extends AbstractFactory
      * Note, local variable used due to processing priorities of PHP,
      * new $namespace.$daoName() produces wrong object
      * 
-     * @param type $daoName
-     * @param type $namespace
-     * @param type $frameworkClass
-     * @param type $interfaces
-     * @return \Xi\DomainUtilities\Factories\fullClassName
+     * @param string $className
+     * @param FactoryOptions $options
+     * @return mixed
      * @throws DaoFactoryUnknownFrameworkException
      */
-    public function create($daoName, $namespace = "", $frameworkClass = "", $interfaces = array())
+    public function create($className, FactoryOptions $options)
     {
-        $fullClassName = $namespace.$daoName; 
-        
-        switch ($frameworkClass)
+        switch ($options->getFramework())
         {
             case "ZendFramework":
                 $this->frameworkClass = "Zend_Db_Table";
@@ -64,17 +61,19 @@ class DaoFactory extends AbstractFactory
                 $this->frameworkClass = "CActiveRecord";
             case "Doctrine2":
                 $this->frameworkClass = "Doctrine\ORM\EntityRepository";
+            case "DummyFramework":
+                $this->frameworkClass = "FrameworkDao";
             default :
                 throw new DaoFactoryUnknownFrameworkException();
         }
         
-        $this->validateClass($fullClassName, $interfaces);
+        $fullClassName = $this->validateClass($this->getClassName($className, $options));
         
         $dao = new $fullClassName();
         
-        if(count($interfaces) > 0)
+        if(count($options->getInterfaces()) > 0)
         {
-            foreach($interfaces as $interface) {
+            foreach($options->getInterfaces() as $interface) {
                 if(!($dao instanceof $interface)) {
                     throw new DaoFactoryInterfaceNotImplementedException();
                 }

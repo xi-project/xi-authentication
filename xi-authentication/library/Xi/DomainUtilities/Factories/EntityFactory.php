@@ -2,6 +2,7 @@
 namespace Xi\DomainUtilities\Factories;
 
 use Xi\DomainUtilities\BaseClasses\AbstractFactory;
+use Xi\DomainUtilities\Factories\FactoryOptions\FactoryOptions;
 
 class EntityFactory extends AbstractFactory
 {
@@ -16,7 +17,8 @@ class EntityFactory extends AbstractFactory
      * 
      * @return EntityFactory
      */
-    public static function getInstance() {
+    public static function getInstance() 
+    {
         return parent::getInstance();
     }
 
@@ -26,14 +28,13 @@ class EntityFactory extends AbstractFactory
      * Note, local variable used due to processing priorities of PHP,
      * new $namespace.$entityName() produces wrong object
      * 
-     * @param string $entityName
-     * @param string $namespace
-     * @return \Xi\DomainUtilities\Factories\Entity
+     * @param string $className
+     * @param FactoryOptions $options
+     * @return Entity
      */
-    public function create($entityName, $namespace = "")
+    public function create($className, FactoryOptions $options)
     {
-        $fullClassName = $namespace.$entityName; 
-        $this->validateClass($fullClassName);
+        $fullClassName = $this->validateClass($this->getClassName($className, $options));
         
         return new $fullClassName();
     }

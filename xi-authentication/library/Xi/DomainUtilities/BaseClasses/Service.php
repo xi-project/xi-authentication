@@ -1,26 +1,25 @@
 <?php
 namespace Xi\DomainUtilities\BaseClasses;
 
+use Xi\DomainUtilities\BaseClasses\DomainBase;
+
 use Xi\DomainUtilities\Factories\RepositoryFactory;
 
-abstract class Service
+use Xi\DomainUtilities\Factories\FactoryOptions\FactoryOptions;
+
+abstract class Service extends DomainBase
 {
     protected $repositories;
+    protected $infraNamespace;
     
     /**
      * 
      * @return RepositoryFactory
      */
-    protected function getRepositoryFactory()
+    private function getRepositoryFactory()
     {
-        if($this->repositoryFactory === null) {
-            $this->repositoryFactory = RepositoryFactory::getInstance();
-        }
-        
-        return $this->repositoryFactory;
+        return RepositoryFactory::getInstance();
     }
-    
-    
     
     /**
      * 
@@ -31,7 +30,10 @@ abstract class Service
     {
         if(!isset($this->repositories[$repositoryName])) {
             $this->repositories[$repositoryName] = 
-                    $this->getRepositoryFactory()->create($repositoryName);
+                    $this->getRepositoryFactory()->create(
+                            $repositoryName, 
+                            FactoryOptions::create()
+                                ->setNamespace($this->getDomainNamespace()));
         }
         
         return $this->repositories[$repositoryName];

@@ -2,8 +2,6 @@
 namespace Xi\DomainUtilities\BaseClasses;
 
 use Xi\DomainUtilities\BaseClasses\AggregateRoot;
-use Xi\DomainUtilities\BaseClasses\Entity;
-use Xi\DomainUtilities\BaseClasses\ValueObject;
 
 abstract class RepositoryCollection extends Collection
 {

@@ -2,6 +2,8 @@
 namespace Xi\DomainUtilities\Factories;
 
 use Xi\DomainUtilities\BaseClasses\AbstractFactory;
+use Xi\DomainUtilities\BaseClasses\ValueObject;
+use Xi\DomainUtilities\Factories\FactoryOptions\FactoryOptions;
 
 class ValueObjectFactory extends AbstractFactory
 {
@@ -16,7 +18,8 @@ class ValueObjectFactory extends AbstractFactory
      * 
      * @return ValueObjectFactory
      */
-    public static function getInstance() {
+    public static function getInstance()
+    {
         return parent::getInstance();
     }
 
@@ -26,14 +29,13 @@ class ValueObjectFactory extends AbstractFactory
      * Note, local variable used due to processing priorities of PHP,
      * new $namespace.$valueObjectName() produces wrong object
      * 
-     * @param string $valueObjectName
-     * @param string $namespace
-     * @return \Xi\DomainUtilities\Factories\ValueObject
+     * @param string $className
+     * @param FactoryOptions $options
+     * @return ValueObject
      */
-    public function create($valueObjectName, $namespace = "")
+    public function create($className, FactoryOptions $options)
     {
-        $fullClassName = $namespace.$valueObjectName; 
-        $this->validateClass($fullClassName);
+        $fullClassName = $this->validateClass($this->getClassName($className, $options));
         
         return new $fullClassName();
     }

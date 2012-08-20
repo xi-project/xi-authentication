@@ -1,7 +1,9 @@
 <?php
 namespace Xi\DomainUtilities\BaseClasses;
 
-abstract class Entity
+use Xi\DomainUtilities\BaseClasses\DomainBase;
+
+abstract class Entity extends DomainBase
 {
     protected $entityId;
     

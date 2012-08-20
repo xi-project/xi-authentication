@@ -5,7 +5,7 @@ use Exception;
 
 class FactoryInvalidClassException extends Exception
 {
-    public function __construct() {
-        parent::__construct("Tried to create a class that doesn't exist", 0, null);
+    public function __construct($className) {
+        parent::__construct("Class ".$className." doesn't exist", 0, null);
     }
 }

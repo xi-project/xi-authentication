@@ -2,6 +2,8 @@
 namespace Xi\DomainUtilities\Factories;
 
 use Xi\DomainUtilities\BaseClasses\AbstractFactory;
+use Xi\DomainUtilities\BaseClasses\Repository;
+use Xi\DomainUtilities\Factories\FactoryOptions\FactoryOptions;
 
 class RepositoryFactory extends AbstractFactory
 {
@@ -16,7 +18,8 @@ class RepositoryFactory extends AbstractFactory
      * 
      * @return RepositoryFactory
      */
-    public static function getInstance() {
+    public static function getInstance()
+    {
         return parent::getInstance();
     }
 
@@ -26,15 +29,13 @@ class RepositoryFactory extends AbstractFactory
      * Note, local variable used due to processing priorities of PHP,
      * new $namespace.$repositoryName() produces wrong object
      * 
-     * @param string $repositoryName
-     * @param string $namespace
-     * @return \Xi\DomainUtilities\Factories\Repository
+     * @param string $className
+     * @param FactoryOptions $options
+     * @return Repository
      */
-    public function create($repositoryName, $namespace = "", $framework = "")
+    public function create($className, FactoryOptions $options)
     {
-        $fullClassName = $namespace.$repositoryName; 
-        $this->validateClass($fullClassName);
-        
-        return new $fullClassName($framework);
+        $fullClassName = $this->validateClass($this->getClassName($className, $options));
+        return new $fullClassName($options->getFramework());
     }
 }

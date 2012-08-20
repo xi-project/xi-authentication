@@ -15,7 +15,7 @@ class FactoryTestAbstract extends PHPUnit_Framework_TestCase
         $this->setExpectedException(
                 "Xi\DomainUtilities\BaseClasses\Exceptions\FactoryInvalidClassException"
         );
-        ServiceFactory::getInstance()->create("InvalidClass", "");
+        $this->factory->create("InvalidClass", "");
     }
     
     public function testCreateShouldFailForInvalidInheritanceException()
@@ -23,7 +23,7 @@ class FactoryTestAbstract extends PHPUnit_Framework_TestCase
         $this->setExpectedException(
                 "Xi\DomainUtilities\BaseClasses\Exceptions\FactoryInvalidInheritanceException"
             );
-        ServiceFactory::getInstance()->create("Dummy", "Xi\TestDummies\\");
+        $this->factory->create("Dummy", "Xi\TestDummies\\");
     }
 }
     

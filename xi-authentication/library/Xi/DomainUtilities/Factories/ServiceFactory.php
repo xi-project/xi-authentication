@@ -2,6 +2,8 @@
 namespace Xi\DomainUtilities\Factories;
 
 use Xi\DomainUtilities\BaseClasses\AbstractFactory;
+use Xi\DomainUtilities\BaseClasses\Service;
+use Xi\DomainUtilities\Factories\FactoryOptions\FactoryOptions;
 
 class ServiceFactory extends AbstractFactory
 {
@@ -16,7 +18,8 @@ class ServiceFactory extends AbstractFactory
      * 
      * @return ServiceFactory
      */
-    public static function getInstance() {
+    public static function getInstance()
+    {
         return parent::getInstance();
     }
 
@@ -26,14 +29,13 @@ class ServiceFactory extends AbstractFactory
      * Note, local variable used due to processing priorities of PHP,
      * new $namespace.$serviceName() produces wrong object
      * 
-     * @param string $serviceName
-     * @param string $namespace
-     * @return \Xi\DomainUtilities\Factories\Service
+     * @param string $className
+     * @param FactoryOptions $options
+     * @return Service
      */
-    public function create($serviceName, $namespace = "")
+    public function create($className, FactoryOptions $options)
     {
-        $fullClassName = $namespace.$serviceName; 
-        $this->validateClass($fullClassName);
+        $fullClassName = $this->validateClass($this->getClassName($className, $options));
         
         return new $fullClassName();
     }

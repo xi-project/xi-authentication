@@ -5,7 +5,7 @@ use Exception;
 
 class FactoryInvalidInheritanceException extends Exception
 {
-    public function __construct() {
-        parent::__construct("Tried to create a class that doesn't extend proper base class", 0, null);
+    public function __construct($className, $type) {
+        parent::__construct("Tried to create a class (".$className.") that doesn't extend proper base class of type ".$type, 0, null);
     }
 }
