@@ -3,6 +3,8 @@ namespace Xi\DomainUtilities\Factories;
 
 use PHPUnit_Framework_TestCase;
 
+use Xi\DomainUtilities\Factories\FactoryOptions\FactoryOptions;
+
 class FactoryTestAbstract extends PHPUnit_Framework_TestCase
 {
     public function setUp() 
@@ -15,7 +17,10 @@ class FactoryTestAbstract extends PHPUnit_Framework_TestCase
         $this->setExpectedException(
                 "Xi\DomainUtilities\BaseClasses\Exceptions\FactoryInvalidClassException"
         );
-        $this->factory->create("InvalidClass", "");
+        $this->factory->create(
+                "InvalidClass", 
+                FactoryOptions::create()
+                    ->setNamespace("Xi\TestDummies\\"));
     }
     
     public function testCreateShouldFailForInvalidInheritanceException()
@@ -23,7 +28,10 @@ class FactoryTestAbstract extends PHPUnit_Framework_TestCase
         $this->setExpectedException(
                 "Xi\DomainUtilities\BaseClasses\Exceptions\FactoryInvalidInheritanceException"
             );
-        $this->factory->create("Dummy", "Xi\TestDummies\\");
+        $this->factory->create(
+                "Dummy", 
+                FactoryOptions::create()
+                    ->setNamespace("Xi\TestDummies\\"));
     }
 }
     

@@ -13,19 +13,9 @@ class DaoFactory extends AbstractFactory
      */
     private $frameworkClass = "";
     
-    protected function __construct() 
+    public function __construct() 
     {
         $this->factoryType = "Dao";
-        return $this;
-    }
-    
-    /**
-     * Implementation of Singleton-pattern so that codecompletion doesn't break
-     * 
-     * @return DaoFactory
-     */
-    public static function getInstance() {
-        return parent::getInstance();
     }
 
     protected function validateClass($className)

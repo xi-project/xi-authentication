@@ -7,20 +7,9 @@ use Xi\DomainUtilities\Factories\FactoryOptions\FactoryOptions;
 
 class ValueObjectFactory extends AbstractFactory
 {
-    protected function __construct() 
+    public function __construct() 
     {
         $this->factoryType = "ValueObject";
-        return $this;
-    }
-    
-    /**
-     * Implementation of Singleton-pattern so that codecompletion doesn't break
-     * 
-     * @return ValueObjectFactory
-     */
-    public static function getInstance()
-    {
-        return parent::getInstance();
     }
 
     /**

@@ -5,12 +5,18 @@ use Xi\DomainUtilities\BaseClasses\Entity;
 
 class EntityDummy extends Entity
 {
+    protected $interfaces = array("IGetDummyProperty");
+    
+    protected $dummyProperty;
+    
     public function getId()
     {
         return $this->entityId;
     }
-    public function initEntity($params)
+    public function initEntity($initObject)
     {
-        $this->entityId = $params['id'];
+        parent::initEntity($initObject);
+        
+        $this->dummyProperty = $initObject->getDummyProperty();
     }
 }

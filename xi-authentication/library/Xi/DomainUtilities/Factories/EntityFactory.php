@@ -6,20 +6,9 @@ use Xi\DomainUtilities\Factories\FactoryOptions\FactoryOptions;
 
 class EntityFactory extends AbstractFactory
 {
-    protected function __construct() 
+    public function __construct() 
     {
         $this->factoryType = "Entity";
-        return $this;
-    }
-    
-    /**
-     * Implementation of Singleton-pattern so that codecompletion doesn't break
-     * 
-     * @return EntityFactory
-     */
-    public static function getInstance() 
-    {
-        return parent::getInstance();
     }
 
     /**

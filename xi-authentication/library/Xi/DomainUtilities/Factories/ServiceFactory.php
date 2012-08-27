@@ -3,24 +3,24 @@ namespace Xi\DomainUtilities\Factories;
 
 use Xi\DomainUtilities\BaseClasses\AbstractFactory;
 use Xi\DomainUtilities\BaseClasses\Service;
+
+use Xi\DomainUtilities\Factories\RepositoryFactory;
+
 use Xi\DomainUtilities\Factories\FactoryOptions\FactoryOptions;
 
 class ServiceFactory extends AbstractFactory
 {
-    protected function __construct() 
+    /**
+     * RepositoryFactory for the Services to create Repositories they need
+     * 
+     * @var RepositoryFactory 
+     */
+    private $repositoryFactory;
+    
+    public function __construct(RepositoryFactory $repositoryFactory) 
     {
         $this->factoryType = "Service";
-        return $this;
-    }
-    
-    /**
-     * Implementation of Singleton-pattern so that codecompletion doesn't break
-     * 
-     * @return ServiceFactory
-     */
-    public static function getInstance()
-    {
-        return parent::getInstance();
+        $this->repositoryFactory = $repositoryFactory;
     }
 
     /**
@@ -37,6 +37,16 @@ class ServiceFactory extends AbstractFactory
     {
         $fullClassName = $this->validateClass($this->getClassName($className, $options));
         
-        return new $fullClassName();
+        $service = new $fullClassName($this->repositoryFactory);
+        
+        $this->initService($service, $options);
+        
+        return $service;
+    }
+    
+    public function initService(Service $service, FactoryOptions $options)
+    {
+        $service->setTranslationAdapter($options->getTranslationAdapter());
+        $service->setExceptionResponseAdapter($options->getExceptionResponseAdapter());
     }
 }

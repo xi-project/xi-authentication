@@ -1,21 +1,26 @@
 <?php
 namespace Xi\DomainUtilities\Factories;
 
+use Xi\DomainUtilities\Factories\RepositoryFactory;
+use Xi\DomainUtilities\Factories\FactoryOptions\FactoryOptions;
+
 class RepositoryFactoryTest extends FactoryTestAbstract
 {
     public function setUp() 
     {
-        RepositoryFactory::setTestInstance($this->getMock("RepositoryFactory"));
-        $this->factory = RepositoryFactory::getInstance();
+        $this->factory = new RepositoryFactory();
     }
     
     public function testCreateShouldSucceed()
     {
         $this->assertSame(
                 "Xi\TestDummies\RepositoryDummy",
-                get_class($this->factory->create("RepositoryDummy", "Xi\TestDummies\\"))
+                get_class($this->factory
+                        ->create(
+                                "RepositoryDummy", 
+                                FactoryOptions::create()
+                                    ->setNamespace("Xi\TestDummies\\"))
+                )
             );
-        
-        $this->getMock("daa");
     }
 }

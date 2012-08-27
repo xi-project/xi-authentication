@@ -7,20 +7,9 @@ use Xi\DomainUtilities\Factories\FactoryOptions\FactoryOptions;
 
 class RepositoryFactory extends AbstractFactory
 {
-    protected function __construct() 
+    public function __construct() 
     {
         $this->factoryType = "Repository";
-        return $this;
-    }
-    
-    /**
-     * Implementation of Singleton-pattern so that codecompletion doesn't break
-     * 
-     * @return RepositoryFactory
-     */
-    public static function getInstance()
-    {
-        return parent::getInstance();
     }
 
     /**

@@ -86,9 +86,9 @@ abstract class Repository extends DomainBase
      * Creates Entity of the type AggregateRoot and adds it to the Repository's
      * Collection of AggregateRoot
      * 
-     * @param array $params
+     * @param mixed $initObject
      */
-    private function createAggregateRoot($params)
+    private function createAggregateRoot($initObject)
     {
         if($this->collection == null) {
             $this->collection = $this->getCollectionFactory()
@@ -97,7 +97,7 @@ abstract class Repository extends DomainBase
         
         $this->collection->add($this->getEntityFactory()
                 ->create($this->entityType, $this->entityNamespace)
-                ->initEntity($params));
+                ->initEntity($initObject));
     }
     
     /**
@@ -122,17 +122,17 @@ abstract class Repository extends DomainBase
      * 
      * @param int $aggregateRootId
      * @param string $entityName
-     * @param array $params
+     * @param mixed $initObject
      * @param string $namespace
      */
-    private function createAggregateEntity($aggregateRootId, $entityName, $params, $namespace = "")
+    private function createAggregateEntity($aggregateRootId, $entityName, $initObject, $namespace = "")
     {
         $this->collection->addAggregateEntity(
                 $this->getEntityFactory()
                     ->create(
                             $entityName, 
                             ($namespace == ""? $this->entityNamespace : $namespace)
-                        )->initEntity($params),
+                        )->initEntity($initObject),
                 $aggregateRootId
             );
     }
@@ -157,17 +157,17 @@ abstract class Repository extends DomainBase
      * 
      * @param int $aggregateRootId
      * @param string $valueObjectName
-     * @param array $params
+     * @param mixed $initObject
      * @param string $namespace
      */
-    private function createAggregateValueObject($aggregateRootId, $valueObjectName, $params, $namespace = "")
+    private function createAggregateValueObject($aggregateRootId, $valueObjectName, $initObject, $namespace = "")
     {
         $this->collection->addAggregateValueObject(
                 $this->getValueObjectFactory()
                     ->create(
                             $valueObjectName, 
                             ($namespace == ""? $this->entityNamespace : $namespace)
-                        )->initEntity($params),
+                        )->initEntity($initObject),
                 $aggregateRootId
                 
             );
